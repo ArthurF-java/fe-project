@@ -1,25 +1,36 @@
-import logo from './logo.svg';
 import './App.css';
+import './index.scss';
+import Profile from "./Profile";
+import Cache from "./Cache";
+import React from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const [version, setVersion] = React.useState('')
+    const baseUrl = process.env.REACT_APP_BASE_URL;
+
+    console.log('process', process.env)
+    console.log('baseUrl',baseUrl)
+
+    React.useEffect(() => {
+        fetch(baseUrl +'/app/version')
+            .then(res => res.json())
+            .then(json => {
+                setVersion(json.version)
+            })
+
+    }, [])
+
+    return (
+        <div className={"wrapper"}>
+            <h1>React app</h1>
+            <h3>Backend version: {version}</h3>
+            <div className={"context"}>
+                <Profile/>
+                <Cache/>
+            </div>
+        </div>
+    );
 }
 
 export default App;

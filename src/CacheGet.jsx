@@ -1,78 +1,49 @@
 import React from "react";
-// import ProfilesList from "./ProfilesList";
 
-function Cache() {
-    const [formData, setFormData] = React.useState({
-        key: '',
-        value: '',
-        ttl: '10'
-    });
+function CacheGet() {
+    const baseUrl = process.env.REACT_APP_BASE_URL;
+    const [key, setKey] = React.useState('');
+    const [result, setResult] = React.useState({
+    key: '',
+    value: ''});
 
     const handleChange = (e) => {
-        const {name, value} = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
+        setKey(e.target.value);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        fetch('http://localhost:8090/app/cache', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-        setFormData({
-            key: '',
-            value: '',
-            ttl: '10'
-        })
+        fetch(baseUrl + '/app/cache?key=' + key)
+        .then(res => res.json()).then(json => {
+        setResult(json)})
+        setKey('')
     }
 
     return (
-        <div className={"profile-context"}>
+        <div className={"get-cache-context"}>
             <div className={"save-cache-context"}>
-                <h3>CACHE</h3>
                 <form onSubmit={handleSubmit}>
                     <label>
                         Key:
                         <input
                             type="text"
                             name="key"
-                            value={formData.key}
+                            value={key}
                             onChange={handleChange}
                         />
                     </label>
-                    <label>
-                        Value:
-                        <input
-                            type="text"
-                            name="value"
-                            value={formData.value}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <label>
-                        TTL(seconds):
-                        <input
-                            type="text"
-                            name="ttl"
-                            value={formData.ttl}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <br/>
-                    <button className={"btm btm-save"} disabled={!(formData.key && formData.value && formData.ttl)}
-                            type="submit">Save in cache
+                    <button className={"btm btm-get"} disabled={!(key)}
+                            type="submit">Get by key
                     </button>
                 </form>
+
+            </div>
+            <br/>
+            <div className={"cache-result"}>
+            <h3>Result: {result.value}</h3>
             </div>
         </div>
-
     );
 }
 
-export default Cache;
+export default CacheGet;

@@ -1,20 +1,128 @@
 body, #root {
-    height: 100%;
-    background: black;
-
-
-
+  height: 100%;
+  width: 100%;
+  background: white;
 }
-/*#root {*/
-/*  background: white;*/
-/*  width: 100%;*/
-/*  height: 100%;*/
-/*}*/
+
+.context {
+  display: flex;
+}
 
 .wrapper {
-    align-items: center;
-    /*margin: 50px;*/
-    width: 500px;
-    height: 90%;
-    background: navy;
+  h1, h2, h3 {
+    display: flex;
+    justify-content: center;
+    color: black;
+  }
+
+  margin: 2% 5% 5% 5%;
+  //align-items: center;
+  //margin: 50px;
+  width: 90%;
+  height: 800px;
+  background: wheat;
+  border: lightgoldenrodyellow solid 5px;
 }
+
+
+.profile-list li {
+  display: flex;
+  justify-content: space-between;
+  //padding: 10px;
+  //border: 3px solid black;
+}
+
+.profile-list .column {
+  flex: 1;
+  text-align: center;
+  border: 1px solid black;
+  background: palegreen;
+}
+
+.btm-save {
+  background: deepskyblue;
+}
+
+.btm-delete {
+  margin-top: 10px;
+  background: red;
+}
+
+.btm-get {
+  margin-left: 40px;
+  background: limegreen;
+}
+
+.btm {
+  //background: sandybrown;
+  border-radius: 5px;
+  width: 120px;
+  height: 30px;
+}
+
+.profile-context {
+  display: flex;
+  width: 50%;
+  flex-direction: column;
+  align-content: space-between;
+  align-items: stretch;
+}
+
+.save-profile-context {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  form {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  label {
+    margin: 2px;
+  }
+  button {
+    margin-left: -185px;
+    margin-bottom: 20px;
+  }
+}
+
+.get-profile-context {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.save-cache-context {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  form {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  label {
+    margin: 2px;
+  }
+}
+
+.get-cache-context {
+  margin-top: 135px;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-content: space-between;
+  align-items: stretch;
+  span {
+    margin-left: 200px;
+  }
+}
+
+.cache-result {
+  width: 100%;
+  background: darkgray;
+}
+
+
