@@ -79,7 +79,7 @@ jobs:
           commitChange: false
 
       - name: check deployment
-        run: cat flux-cd/fe/dev/
+        run: cat flux-cd/fe/dev/deployment.yaml
 
       - name: Push to FluxCD repository
         run: |
