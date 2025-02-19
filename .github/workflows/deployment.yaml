@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - dev
+      - test
+      - prod
 
 env:
   BUILD_NAME: "${{ vars.DOCKER_HUB_USERNAME }}/${{ vars.PROJECT_NAME }}"
@@ -70,14 +72,6 @@ jobs:
         run: |
           git clone https://github.com/ArthurF-java/flux-cd.git
 
-#      - name: check repo
-#        run: |
-#          ls
-#          echo '-------------'
-#          ls flux-cd/
-#          echo '+++++++++++++++++++'
-#          ls flux-cd/fe/
-
       - name: Update FluxCD deployment.yaml
         uses: fjogeleit/yaml-update-action@main
         with:
@@ -87,9 +81,6 @@ jobs:
               "spec.template.spec.containers[0].image": "${{ steps.full_build_name.outputs.full_build_name }}"
             }
           commitChange: false
-
-#      - name: check deployment
-#        run: cat flux-cd/fe/dev/deployment.yaml
 
       - name: Push to FluxCD repository
         run: |
