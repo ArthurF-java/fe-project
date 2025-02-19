@@ -26,6 +26,14 @@ jobs:
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
         id: extract_branch
 
+      - name: Extract build name
+        shell: bash
+        run: echo "build_name=$BUILD_NAME" >> $GITHUB_OUTPUT
+        id: extract_build_name
+
+      - name: check Build name
+        run: echo '${{ steps.extract_build_name.outputs.build_name }}'
+
 #      - name: Create .env file dev
 #        if: steps.extract_branch.outputs.branch == 'dev'
 #        run: |
@@ -74,9 +82,14 @@ jobs:
         uses: fjogeleit/yaml-update-action@main
         with:
           valueFile: 'flux-cd/fe/${{ steps.extract_branch.outputs.branch }}/deployment.yaml'
-          propertyPath: 'spec.template.spec.containers[0].image'
-          value: ${{ FULL_BUILD_NAME }}
+          changes: |
+            {
+              "spec.template.spec.containers[0].image": "${{ steps.extract_build_name.outputs.build_name }}:${{ github.sha }}"
+            }
           commitChange: false
+#          propertyPath: 'spec.template.spec.containers[0].image'
+#          value: ${{ FULL_BUILD_NAME }}
+#          commitChange: false
 
       - name: check deployment
         run: cat flux-cd/fe/dev/deployment.yaml
