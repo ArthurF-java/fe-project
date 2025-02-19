@@ -8,9 +8,11 @@ function App() {
 
     const [version, setVersion] = React.useState('')
     const baseUrl = process.env.REACT_APP_BASE_URL;
+    const frontVersion = "1.0.0";
 
     console.log('process', process.env)
     console.log('baseUrl',baseUrl)
+    console.log(window.location)
 
     React.useEffect(() => {
         fetch(baseUrl +'/app/version')
@@ -24,7 +26,7 @@ function App() {
     return (
         <div className={"wrapper"}>
             <h1>React app</h1>
-            <h3>Backend version: {version}</h3>
+            <h3>Backend version: {version}. Frontend version: {frontVersion}</h3>
             <div className={"context"}>
                 <Profile/>
                 <Cache/>
