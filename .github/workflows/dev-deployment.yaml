@@ -62,6 +62,11 @@ jobs:
         run: |
           git clone https://github.com/ArthurF-java/flux-cd.git
 
+      - name: check repo
+        run: |
+          ls
+          ls flux-cd/
+
       - name: Update FluxCD deployment.yaml
         uses: fjogeleit/yaml-update-action@main
         with:
@@ -69,14 +74,11 @@ jobs:
           propertyPath: 'spec.template.spec.containers.image'
           value: $FULL_BUILD_NAME
           commitChange: false
-#          valueFile: 'flux-cd/fe/${{ steps.extract_branch.outputs.branch }}/deployment.yaml'
-#          changes: |
-#            {
-#              "spec.template.spec.containers.image": "1-${{ steps.extract_branch.outputs.branch }}-${{ github.sha }}"
-#            }
-#          commitChange: false
 
-      - name: Pust to FluxCD repository
+      - name: check deployment
+        run: cat flux-cd/fe/de/
+
+      - name: Push to FluxCD repository
         run: |
           cd flux-cd
           git add --all
