@@ -65,7 +65,10 @@ jobs:
       - name: check repo
         run: |
           ls
+          echo '-------------'
           ls flux-cd/
+          echo '+++++++++++++++++++'
+          ls flux-cd/fe/
 
       - name: Update FluxCD deployment.yaml
         uses: fjogeleit/yaml-update-action@main
