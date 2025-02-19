@@ -75,11 +75,11 @@ jobs:
         with:
           valueFile: 'flux-cd/fe/${{ steps.extract_branch.outputs.branch }}/deployment.yaml'
           propertyPath: 'spec.template.spec.containers[0].image'
-          value: $FULL_BUILD_NAME
+          value: '$FULL_BUILD_NAME'
           commitChange: false
 
       - name: check deployment
-        run: cat flux-cd/fe/dev/deployment.yaml
+        run: cat flux-cd/fe/devv/deployment.yaml
 
       - name: Push to FluxCD repository
         run: |
@@ -104,7 +104,7 @@ jobs:
         if: failure()
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_CHANNEL: afon-check
+          SLACK_CHANNEL: afon-error
           SLACK_COLOR: ${{ job.status }}
           SLACK_ICON: https://github.com/rtCamp.png?size=48
           SLACK_TITLE: 'Deploy FE is failed for image 1-${{ steps.extract_branch.outputs.branch }}-${{ github.sha }}'
