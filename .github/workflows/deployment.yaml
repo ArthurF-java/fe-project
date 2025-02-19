@@ -26,40 +26,40 @@ jobs:
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
         id: extract_branch
 
-      - name: Extract build name
+      - name: Extract full build name
         shell: bash
-        run: echo "build_name=$BUILD_NAME" >> $GITHUB_OUTPUT
-        id: extract_build_name
+        run: echo "full_build_name=$FULL_BUILD_NAME" >> $GITHUB_OUTPUT
+        id: full_build_name
 
       - name: check Build name
         run: echo '${{ steps.extract_build_name.outputs.build_name }}'
 
-#      - name: Create .env file dev
-#        if: steps.extract_branch.outputs.branch == 'dev'
-#        run: |
-#          echo "REACT_APP_BASE_URL=${{ vars.DEV_BE_BASE_URL }}" >> .env
-#
-#      - name: Create .env file test
-#        if: steps.extract_branch.outputs.branch == 'test'
-#        run: |
-#          echo "REACT_APP_BASE_URL=${{ vars.TEST_BE_BASE_URL }}" >> .env
-#
-#      - name: Create .env file prod
-#        if: steps.extract_branch.outputs.branch == 'prod'
-#        run: |
-#          echo "REACT_APP_BASE_URL=${{ vars.PROD_BE_BASE_URL }}" >> .env
-#
-#      - name: Log in to Docker Hub
-#        uses: docker/login-action@v3
-#        with:
-#          username: ${{ vars.DOCKER_HUB_USERNAME }}
-#          password: ${{ secrets.DOCKER_HUB_TOKEN }}
-#
-#      - name: Build Docker image
-#        run: docker build -t $FULL_BUILD_NAME .
-#
-#      - name: Push Docker image
-#        run: docker push $FULL_BUILD_NAME
+      - name: Create .env file dev
+        if: steps.extract_branch.outputs.branch == 'dev'
+        run: |
+          echo "REACT_APP_BASE_URL=${{ vars.DEV_BE_BASE_URL }}" >> .env
+
+      - name: Create .env file test
+        if: steps.extract_branch.outputs.branch == 'test'
+        run: |
+          echo "REACT_APP_BASE_URL=${{ vars.TEST_BE_BASE_URL }}" >> .env
+
+      - name: Create .env file prod
+        if: steps.extract_branch.outputs.branch == 'prod'
+        run: |
+          echo "REACT_APP_BASE_URL=${{ vars.PROD_BE_BASE_URL }}" >> .env
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - name: Build Docker image
+        run: docker build -t $FULL_BUILD_NAME .
+
+      - name: Push Docker image
+        run: docker push $FULL_BUILD_NAME
 
       - name: Set up global config
         run: |
@@ -70,13 +70,13 @@ jobs:
         run: |
           git clone https://github.com/ArthurF-java/flux-cd.git
 
-      - name: check repo
-        run: |
-          ls
-          echo '-------------'
-          ls flux-cd/
-          echo '+++++++++++++++++++'
-          ls flux-cd/fe/
+#      - name: check repo
+#        run: |
+#          ls
+#          echo '-------------'
+#          ls flux-cd/
+#          echo '+++++++++++++++++++'
+#          ls flux-cd/fe/
 
       - name: Update FluxCD deployment.yaml
         uses: fjogeleit/yaml-update-action@main
@@ -84,15 +84,12 @@ jobs:
           valueFile: 'flux-cd/fe/${{ steps.extract_branch.outputs.branch }}/deployment.yaml'
           changes: |
             {
-              "spec.template.spec.containers[0].image": "${{ steps.extract_build_name.outputs.build_name }}:${{ github.sha }}"
+              "spec.template.spec.containers[0].image": "${{ steps.full_build_name.outputs.full_build_name }}"
             }
           commitChange: false
-#          propertyPath: 'spec.template.spec.containers[0].image'
-#          value: ${{ FULL_BUILD_NAME }}
-#          commitChange: false
 
-      - name: check deployment
-        run: cat flux-cd/fe/dev/deployment.yaml
+#      - name: check deployment
+#        run: cat flux-cd/fe/dev/deployment.yaml
 
       - name: Push to FluxCD repository
         run: |
