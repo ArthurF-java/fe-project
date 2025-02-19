@@ -8,7 +8,7 @@ function App() {
 
     const [version, setVersion] = React.useState('')
     const baseUrl = process.env.REACT_APP_BASE_URL;
-    const frontVersion = "2.0.0";
+    const frontVersion = "2.1.0";
 
     React.useEffect(() => {
         fetch(baseUrl +'/app/version')
