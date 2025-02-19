@@ -75,7 +75,7 @@ jobs:
         with:
           valueFile: 'flux-cd/fe/${{ steps.extract_branch.outputs.branch }}/deployment.yaml'
           propertyPath: 'spec.template.spec.containers[0].image'
-          value: '$FULL_BUILD_NAME'
+          value: ${{ FULL_BUILD_NAME }}
           commitChange: false
 
       - name: check deployment
