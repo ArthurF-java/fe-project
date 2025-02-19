@@ -26,32 +26,32 @@ jobs:
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
         id: extract_branch
 
-      - name: Create .env file dev
-        if: steps.extract_branch.outputs.branch == 'dev'
-        run: |
-          echo "REACT_APP_BASE_URL=${{ vars.DEV_BE_BASE_URL }}" >> .env
-
-      - name: Create .env file test
-        if: steps.extract_branch.outputs.branch == 'test'
-        run: |
-          echo "REACT_APP_BASE_URL=${{ vars.TEST_BE_BASE_URL }}" >> .env
-
-      - name: Create .env file prod
-        if: steps.extract_branch.outputs.branch == 'prod'
-        run: |
-          echo "REACT_APP_BASE_URL=${{ vars.PROD_BE_BASE_URL }}" >> .env
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ vars.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_TOKEN }}
-
-      - name: Build Docker image
-        run: docker build -t $FULL_BUILD_NAME .
-
-      - name: Push Docker image
-        run: docker push $FULL_BUILD_NAME
+#      - name: Create .env file dev
+#        if: steps.extract_branch.outputs.branch == 'dev'
+#        run: |
+#          echo "REACT_APP_BASE_URL=${{ vars.DEV_BE_BASE_URL }}" >> .env
+#
+#      - name: Create .env file test
+#        if: steps.extract_branch.outputs.branch == 'test'
+#        run: |
+#          echo "REACT_APP_BASE_URL=${{ vars.TEST_BE_BASE_URL }}" >> .env
+#
+#      - name: Create .env file prod
+#        if: steps.extract_branch.outputs.branch == 'prod'
+#        run: |
+#          echo "REACT_APP_BASE_URL=${{ vars.PROD_BE_BASE_URL }}" >> .env
+#
+#      - name: Log in to Docker Hub
+#        uses: docker/login-action@v3
+#        with:
+#          username: ${{ vars.DOCKER_HUB_USERNAME }}
+#          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+#
+#      - name: Build Docker image
+#        run: docker build -t $FULL_BUILD_NAME .
+#
+#      - name: Push Docker image
+#        run: docker push $FULL_BUILD_NAME
 
       - name: Set up global config
         run: |
@@ -76,7 +76,7 @@ jobs:
           commitChange: false
 
       - name: check deployment
-        run: cat flux-cd/fe/de/
+        run: cat flux-cd/fe/dev/
 
       - name: Push to FluxCD repository
         run: |
