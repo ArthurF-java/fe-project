@@ -42,23 +42,22 @@ jobs:
 #          cat .env  # Optional: Print the .env file for debugging
 
       - name: Create .env file dev
-        if: steps.extract_branch.outputs.branch != 'dev'
+        if: steps.extract_branch.outputs.branch == 'dev'
         run: |
           echo "REACT_APP_BASE_URL=${{ vars.DEV_BE_BASE_URL }}" >> .env
-          cat .env  # Optional: Print the .env file for debugging
 
       - name: Create .env file test
-        if: steps.extract_branch.outputs.branch != 'test'
+        if: steps.extract_branch.outputs.branch == 'test'
         run: |
           echo "REACT_APP_BASE_URL=${{ vars.TEST_BE_BASE_URL }}" >> .env
-          cat .env  # Optional: Print the .env file for debugging
 
       - name: Create .env file prod
-        if: steps.extract_branch.outputs.branch != 'prod'
+        if: steps.extract_branch.outputs.branch == 'prod'
         run: |
           echo "REACT_APP_BASE_URL=${{ vars.PROD_BE_BASE_URL }}" >> .env
-          cat .env
 
+      - name: cat .env
+        run: cat .env
 
 #      - name: Log in to Docker Hub
 #        uses: docker/login-action@v3
