@@ -57,6 +57,9 @@ jobs:
           username: ${{ vars.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
+      - name: check env
+        run: cat .env
+
       - name: Build Docker image
         run: docker build -t $FULL_BUILD_NAME .
 
