@@ -102,7 +102,7 @@ jobs:
             git fetch
             git pull
             git reset origin/main
-            git add ./fe/${{ steps.extract_branch.outputs.branch }}/
+            git add ./fe/${{ steps.extract_branch.outputs.branch }}/deployment.yaml
             git commit -m "${{ steps.extract_branch.outputs.branch }}-${{ github.sha }}"
             git push https://${{ secrets.TOKEN_GITHUB }}@github.com/arthurf-java/flux-cd.git main
 #
