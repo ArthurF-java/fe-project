@@ -88,9 +88,23 @@ jobs:
       - name: Push to FluxCD repository
         run: |
           cd flux-cd
-          git add --all
+          git add
           git commit -m "${{ steps.extract_branch.outputs.branch }}-${{ github.sha }}"
           git push https://${{ secrets.TOKEN_GITHUB }}@github.com/arthurf-java/flux-cd.git main
+
+      - name: Pust to FluxCD repository with retries
+        uses: nick-fields/retry@v3
+        with:
+          timeout_seconds: 10
+          max_attempts: 5
+          command: |
+            cd flux-cd
+            git fetch
+            git pull
+            git reset origin/main
+            git add ./fe/${{ steps.extract_branch.outputs.branch }}/
+            git commit -m "${{ steps.extract_branch.outputs.branch }}-${{ github.sha }}"
+            git push https://${{ secrets.TOKEN_GITHUB }}@github.com/arthurf-java/flux-cd.git main
 #
       - name: Slack Notification Success
         if: success()
