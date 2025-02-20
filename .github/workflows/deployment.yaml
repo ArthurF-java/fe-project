@@ -17,16 +17,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set FULL_BUILD_NAME
-        id: extract-full-build-name
-        run: |
-          FULL_BUILD_NAME=$BUILD_NAME:${{ github.sha }}
-          echo "FULL_BUILD_NAME=$FULL_BUILD_NAME" >> $GITHUB_ENV
-
       - name: Extract branch name
         shell: bash
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
         id: extract_branch
+
+      - name: Set FULL_BUILD_NAME
+        id: extract-full-build-name
+        run: |
+          FULL_BUILD_NAME=${{ steps.extract_branch.outputs.branch }}-$BUILD_NAME:${{ github.sha }}
+          echo "FULL_BUILD_NAME=$FULL_BUILD_NAME" >> $GITHUB_ENV
 
       - name: Extract full build name
         shell: bash
