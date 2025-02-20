@@ -25,7 +25,7 @@ jobs:
       - name: Set FULL_BUILD_NAME
         id: extract-full-build-name
         run: |
-          FULL_BUILD_NAME=${{ steps.extract_branch.outputs.branch }}-$BUILD_NAME:${{ github.sha }}
+          FULL_BUILD_NAME=$BUILD_NAME:${{ steps.extract_branch.outputs.branch }}-${{ github.sha }}
           echo "FULL_BUILD_NAME=$FULL_BUILD_NAME" >> $GITHUB_ENV
 
       - name: Extract full build name
