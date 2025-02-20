@@ -85,13 +85,6 @@ jobs:
             }
           commitChange: false
 
-      - name: Push to FluxCD repository
-        run: |
-          cd flux-cd
-          git add
-          git commit -m "${{ steps.extract_branch.outputs.branch }}-${{ github.sha }}"
-          git push https://${{ secrets.TOKEN_GITHUB }}@github.com/arthurf-java/flux-cd.git main
-
       - name: Pust to FluxCD repository with retries
         uses: nick-fields/retry@v3
         with:
